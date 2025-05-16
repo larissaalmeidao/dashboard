@@ -1,0 +1,322 @@
+@import url('https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&family=Cherry+Bomb+One&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+    --clr-background: #ffffff;
+    --clr-font: #1C1C1C;
+    --clr-sidebar: #1C1C1C;
+    --clr-magenta: #FF254A;
+    --clr-ciano: #1CEAE4;
+    --clr-amarelo: #FFE910;
+    --clr-shadow: #c0c0c0;
+    --clr-cabecalho: #ffffff;
+}
+
+[data-theme="dark"] {
+    --clr-background: #1C1C1C;
+    --clr-font: #d6d6d6;
+    --clr-sidebar: #010101;
+    --clr-magenta: #FF254A;
+    --clr-ciano: #1CEAE4;
+    --clr-amarelo: #FFE910;
+    --clr-shadow: #292828;
+    --clr-cabecalho: #010101;
+}
+[data-theme="dark"] .modal-conteudo {
+    background-color: var(--clr-sidebar);
+    color: var(--clr-font);
+}
+
+[data-theme="dark"] .campo-formulario label {
+    color: var(--clr-font);
+}
+
+[data-theme="dark"] .campo-formulario input,
+[data-theme="dark"] .campo-formulario textarea {
+    background-color: #333;
+    border-color: #444;
+    color: var(--clr-font);
+}
+
+[data-theme="dark"] .botao-cancelar {
+    background-color: #333;
+    color: var(--clr-font);
+}
+
+[data-theme="dark"] .card-desenvolvedores .card{
+    background-color: #010101;
+}
+
+[data-theme="dark"] .onda-fundo h2, p{
+    color: #010101;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body::-webkit-scrollbar {
+    width: 5px;             
+  }
+  
+body::-webkit-scrollbar-thumb {
+    background-color: rgb(228, 227, 227);    
+    border-radius: 20px;       
+}
+
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--clr-background);
+    color: var(--clr-font);
+}
+
+.container-sidebar {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--clr-sidebar);
+}
+
+/* Sidebar */
+.sidebar {
+    width: 260px;
+    background-color: var(--clr-sidebar);
+    padding: 2rem;
+    transition: transform 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-bottom: 400px;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    width: 180px;
+}
+
+.fechar-button {
+    background: none;
+    border: none;
+    color: #d6d6d6;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: none;
+}
+
+.sidebar ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-family: "Poppins";
+    font-weight: 600;
+    margin-left: -20px;
+}
+
+.sidebar a {
+    color: #d6d6d6;
+    text-decoration: none;
+    font-size: 1.2rem;
+    padding: 0.8rem 1rem;
+    border-radius: 3rem;
+    display: flex;
+    transition: all 0.3s ease;
+    align-items: center;
+}
+
+.sidebar a:hover {
+    background-color: rgba(255, 255, 255, 0.357);
+    transform: translateX(5px);
+}
+
+/* **************************** */
+/* -----Imagens da sidebar----- */
+/* **************************** */
+.sobre{
+    width: 2rem;
+    height: 2rem;
+    align-items: center;
+    margin-right: 5px;
+}
+.pubs{
+    width: 2rem;
+    height: 2rem;
+    align-items: center;
+    margin-right: 5px;
+}
+.cal{
+    width: 2rem;
+    height: 2rem;
+    align-items: center;
+    margin-right: 5px;
+}
+.painel{
+    width: 1.5rem;
+    height: 1.5rem;
+    align-items: center;
+    margin-right: 9px;
+    margin-left: 4px;
+}
+
+.tema-button {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 3rem;
+    color: #d6d6d6;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: "Poppins";
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+.tema-button:hover{
+    transform: translateX(5px) scale(1.05);
+}
+
+.parteBaixo {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem 2rem;
+    background-color: var(--clr-sidebar);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.fotoPerfil img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    border: 2px solid #fff;
+}
+
+.user-info {
+    margin-left: 10px;
+    flex-grow: 1;
+}
+
+.user-info .nome {
+    margin: 0;
+    font-size: 20px;
+    color: #dadada;
+    font-weight: bold;
+}
+
+.user-info .cargo {
+    margin: 0;
+    font-size: 15px;
+    color: #dadada;
+}
+
+.logout{
+    padding: 10px;
+    font-size: 20px;
+    border-radius: 3rem;
+    background-color: #D92B04;
+    color: white;
+    font-family: "Poppins";
+    font-weight: 600;
+}
+
+/* Responsividade */
+
+@media (max-width: 1300px) {
+    
+    .sobre-conteudo{
+        position: relative;
+        display: block;
+    }
+    .img-dash{
+        margin-top: 2rem;
+    }
+    .sobre-conteudo{
+        margin-bottom: 1rem
+    }
+    .card-desenvolvedores{
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+    }
+   
+    .sobre-conteudo p{
+        max-width: 700px;
+    }
+
+    
+    
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100%;
+        transform: translateX(-100%);
+        z-index: 1000;
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .fechar-button {
+        display: block;
+    }
+
+    .menu-button {
+        display: block;
+        border: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.222);
+        background-color: var(--clr-sidebar);
+        border-radius: 1rem;
+    }
+
+    .menu{
+        padding: 9px;
+        height: 3rem;
+        width: 3rem;
+    }
+
+    .container-busca {
+        flex-direction: column;
+    }
+
+    .botao-acao {
+        width: 100%;
+    }
+
+    
+}
+
+@media (min-width: 769px) {
+    .menu-button {
+        display: none;
+    }
+}

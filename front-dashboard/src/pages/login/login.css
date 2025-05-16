@@ -1,0 +1,205 @@
+#colab{
+    border: none;
+    background-color: transparent;
+    padding: auto;
+}
+
+.outros, .outros1, .outros2, .outros3, .outros4{
+    border: none;
+    background-color: transparent;
+    padding: auto;
+}
+
+
+#logoGrande{
+    margin-top: 14rem;
+    width: 30%;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    transform: translate(-50%, -50%);
+    margin-bottom: -100px;
+}
+
+#dados{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    margin-top: 120px;
+}
+
+label{
+    width: 50px;
+    margin-top: 20px;
+    position: relative;
+    margin-left: 30px;
+}
+
+.inputGroupEmail{
+    display: flex;
+    position: relative;
+    width: 500px;
+    box-shadow: 0 3.66px 3.66px rgba(0, 0, 0, 0.222);
+    border: none;
+    border-radius: 3rem;
+    padding: 10px;
+    background-color: white;
+    align-items: center;
+}
+#mail{
+    width: 20px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+#key{
+    width: 25px;
+    margin-right: 11px;
+    margin-left: 10px;
+}
+#email{
+    outline: none;
+    width: 300px;
+    border: none;
+}
+#email::placeholder{
+    opacity: 40%;
+}
+
+.inputGroupSenha{
+    display: flex;
+    position: relative;
+    width: 500px;
+    box-shadow: 0 3.66px 3.66px rgba(0, 0, 0, 0.222);
+    border: none;
+    border-radius: 3rem;
+    padding: 10px;
+    background-color: white;
+    align-items: center;
+}
+
+#senha{
+    outline: none;
+    width: 300px;
+    border: none;
+}
+#senha::placeholder{
+    opacity: 40%;
+}
+
+.eyeopen{
+    width: 25px;
+    position: relative;
+}
+
+.eyeclosed{
+    width: 25px;
+    position: relative;
+}
+
+.viewPassword{
+    background-color: transparent;
+    position: relative;
+    left: 20%;
+    opacity: 50%;
+}
+
+#forgotPassword{
+    text-decoration: underline;
+    font-weight: 600;
+    text-align: end;
+    opacity: 60%;
+    margin-top: 15px;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+#confirmar-login{
+    position: relative;
+    border-radius: 3rem;
+    font-size: 20px;
+    padding: 13px;
+    background-color: black;
+    color: white;
+    position: relative;
+    margin-top: 30px;
+    margin-bottom: -50px;
+    left: 50%;
+    right: 50%;
+    transform: translate(-50%, -50%);
+    text-decoration: none;
+    width: 150px;
+    transition: transform 0.2s ease-in-out;
+}
+
+#but{
+    text-decoration: none;
+    color: white;
+}
+#botoes{
+    display: flex;
+    flex-direction: column;
+}
+#dontHaveAccount{
+    position: relative;
+    border-radius: 3rem;
+    font-size: 20px;
+    padding: 13px;
+    background-color: #FF254A;
+    color: white;
+    position: relative;
+    margin-top: 30px;
+    margin-bottom: -50px;
+    left: 50%;
+    right: 50%;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    margin-top: 80px;
+    transition: transform 0.2s ease-in-out;    
+    text-decoration: none;
+    text-align: center;
+}
+
+#footer{
+    width: 91%;
+    margin: 70px;
+    background-color: #1c1c1c65;
+    border-radius: 2rem;
+    padding: 10px;
+    display: inline-flex;
+    flex-direction: row;
+    gap: 50px;
+    justify-content: space-around;
+}
+
+#companhia{
+    color: black;
+    position: relative;
+}
+
+#ajuda{
+    color: black;
+    position: relative;
+}
+
+#siga{
+    color: black;
+    position: relative;
+}
+
+#a{
+    color: black;
+}
+
+.hiperlink{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+@media (max-width: 768px) {
+    #logoGrande{
+        min-width: 50%;
+    }
+}

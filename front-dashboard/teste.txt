@@ -1,0 +1,460 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Security.Claims;
+
+[ApiController]
+[Route("api")]
+public class MainController : ControllerBase
+{
+    private readonly ApplicationDbContext _db;
+    private readonly IWebHostEnvironment _env;
+    private readonly IConfiguration _config;
+
+    public MainController(ApplicationDbContext db, IWebHostEnvironment env, IConfiguration config)
+    {
+        _db = db;
+        _env = env;
+        _config = config;
+    }
+
+    // Middleware de autenticação (será implementado como atributo)
+    private bool Authenticate(string token)
+    {
+        if (string.IsNullOrEmpty(token))
+            return false;
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(_config["Jwt:Secret"]);
+
+        try
+        {
+            tokenHandler.ValidateToken(token, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ClockSkew = TimeSpan.Zero
+            }, out SecurityToken validatedToken);
+
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    [Authorize] // Atributo para autenticação
+    [HttpPost("images")]
+    public async Task<IActionResult> UploadImage(IFormFile image)
+    {
+        try
+        {
+            if (image == null || image.Length == 0)
+                return BadRequest("Nenhuma imagem enviada.");
+
+            var uploadsFolder = Path.Combine(_env.WebRootPath, "uploads");
+            if (!Directory.Exists(uploadsFolder))
+                Directory.CreateDirectory(uploadsFolder);
+
+            var uniqueFileName = Guid.NewGuid().ToString() + "_" + image.FileName;
+            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await image.CopyToAsync(stream);
+            }
+
+            var imageRecord = new Image
+            {
+                FileName = uniqueFileName,
+                FilePath = filePath
+            };
+
+            _db.Images.Add(imageRecord);
+            await _db.SaveChangesAsync();
+
+            return Ok(new { message = "Imagem enviada com sucesso!", filename = uniqueFileName });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { error = ex.Message });
+        }
+    }
+
+    [HttpGet("images")]
+    public async Task<IActionResult> GetImages()
+    {
+        try
+        {
+            var images = await _db.Images.ToListAsync();
+            return Ok(images);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { error = ex.Message });
+        }
+    }
+
+    [Authorize]
+    [HttpPut("images/{id}")]
+    public async Task<IActionResult> UpdateImage(int id, IFormFile image)
+    {
+        try
+        {
+            var existingImage = await _db.Images.FindAsync(id);
+            if (existingImage == null)
+                return NotFound(new { error = "Imagem não encontrada" });
+
+            if (image == null || image.Length == 0)
+                return BadRequest("Nenhuma imagem enviada.");
+
+            // Salva o caminho antigo para deletar depois
+            var oldPath = existingImage.FilePath;
+
+            // Processa a nova imagem
+            var uploadsFolder = Path.Combine(_env.WebRootPath, "uploads");
+            var uniqueFileName = Guid.NewGuid().ToString() + "_" + image.FileName;
+            var newPath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            using (var stream = new FileStream(newPath, FileMode.Create))
+            {
+                await image.CopyToAsync(stream);
+            }
+
+            // Atualiza o registro
+            existingImage.FileName = uniqueFileName;
+            existingImage.FilePath = newPath;
+            _db.Images.Update(existingImage);
+            await _db.SaveChangesAsync();
+
+            // Remove a imagem antiga
+            if (System.IO.File.Exists(oldPath))
+            {
+                try
+                {
+                    System.IO.File.Delete(oldPath);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Erro ao remover imagem antiga: " + ex.Message);
+                }
+            }
+
+            return Ok(new { message = "Imagem atualizada com sucesso!" });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { error = ex.Message });
+        }
+    }
+
+    [Authorize]
+    [HttpDelete("images/{id}")]
+    public async Task<IActionResult> DeleteImage(int id)
+    {
+        try
+        {
+            var image = await _db.Images.FindAsync(id);
+            if (image == null)
+                return NotFound(new { error = "Imagem não encontrada" });
+
+            var filePath = image.FilePath;
+            _db.Images.Remove(image);
+            await _db.SaveChangesAsync();
+
+            if (System.IO.File.Exists(filePath))
+            {
+                try
+                {
+                    System.IO.File.Delete(filePath);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Erro ao remover imagem do disco: " + ex.Message);
+                }
+            }
+
+            return Ok(new { message = "Imagem excluída com sucesso!" });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { error = ex.Message });
+        }
+    }
+
+    [Authorize]
+    [HttpPost("eventos")]
+    public async Task<IActionResult> CreateEvento([FromBody] EventoDto eventoDto)
+    {
+        try
+        {
+            // Verifica conflito de horário
+            var conflito = await _db.Eventos
+                .AnyAsync(e => e.DataI == eventoDto.DataI && e.HoraI == eventoDto.HoraI);
+
+            if (conflito)
+            {
+                return BadRequest(new { error = "Este horário já está reservado! Escolha outro." });
+            }
+
+            var evento = new Evento
+            {
+                Nome = eventoDto.Nome,
+                Tipo = eventoDto.Tipo,
+                Descricao = eventoDto.Descricao,
+                DataI = eventoDto.DataI,
+                HoraI = eventoDto.HoraI,
+                HoraF = eventoDto.HoraF,
+                Cep = eventoDto.Cep,
+                Logradouro = eventoDto.Logradouro,
+                Numero = eventoDto.Numero,
+                Bairro = eventoDto.Bairro,
+                Cidade = eventoDto.Cidade,
+                Capacidade = eventoDto.Capacidade,
+                Responsavel = eventoDto.Responsavel,
+                ImagemId = eventoDto.ImagemId
+            };
+
+            _db.Eventos.Add(evento);
+            await _db.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetEvento), new { id = evento.Id }, new
+            {
+                success = true,
+                message = "Evento cadastrado com sucesso!",
+                id = evento.Id
+            });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Erro no agendamento: " + ex);
+            return StatusCode(500, new
+            {
+                error = "Erro interno. Tente novamente mais tarde.",
+                details = ex.Message
+            });
+        }
+    }
+
+    [HttpGet("eventos")]
+    public async Task<IActionResult> GetEventos()
+    {
+        try
+        {
+            var eventos = await _db.Eventos
+                .OrderByDescending(e => e.DataI)
+                .Select(e => new
+                {
+                    e.Id,
+                    e.Nome,
+                    e.Tipo,
+                    e.Descricao,
+                    DataFormatada = e.DataI.ToString("dd/MM/yyyy"),
+                    HorarioInicio = e.HoraI.ToString(@"hh\:mm"),
+                    HorarioFim = e.HoraF.ToString(@"hh\:mm"),
+                    e.Cep,
+                    e.Logradouro,
+                    e.Numero,
+                    e.Bairro,
+                    e.Cidade,
+                    e.Capacidade,
+                    e.Responsavel
+                })
+                .ToListAsync();
+
+            return Ok(eventos);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Erro ao buscar eventos: " + ex);
+            return StatusCode(500, new { error = ex.Message });
+        }
+    }
+
+    [HttpGet("eventos/{id}")]
+    public async Task<IActionResult> GetEvento(int id)
+    {
+        try
+        {
+            var evento = await _db.Eventos
+                .Where(e => e.Id == id)
+                .Select(e => new
+                {
+                    e.Id,
+                    e.Nome,
+                    e.Tipo,
+                    e.Descricao,
+                    Data = e.DataI.ToString("dd/MM/yyyy"),
+                    HoraI = e.HoraI.ToString(@"hh\:mm"),
+                    HoraF = e.HoraF.ToString(@"hh\:mm"),
+                    e.Cep,
+                    e.Logradouro,
+                    e.Numero,
+                    e.Bairro,
+                    e.Cidade,
+                    e.Capacidade,
+                    e.Responsavel
+                })
+                .FirstOrDefaultAsync();
+
+            if (evento == null)
+                return NotFound(new { error = "Evento não encontrado" });
+
+            return Ok(evento);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Erro ao buscar evento: " + ex);
+            return StatusCode(500, new { error = ex.Message });
+        }
+    }
+
+    [Authorize]
+    [HttpPut("eventos/{id}")]
+    public async Task<IActionResult> UpdateEvento(int id, [FromBody] EventoDto eventoDto)
+    {
+        try
+        {
+            var evento = await _db.Eventos.FindAsync(id);
+            if (evento == null)
+                return NotFound(new { error = "Evento não encontrado" });
+
+            // Verifica conflito de horário
+            var conflito = await _db.Eventos
+                .AnyAsync(e => e.DataI == eventoDto.DataI && e.HoraI == eventoDto.HoraI && e.Id != id);
+
+            if (conflito)
+            {
+                return BadRequest(new { error = "Este horário já está reservado! Escolha outro." });
+            }
+
+            evento.Nome = eventoDto.Nome;
+            evento.Tipo = eventoDto.Tipo;
+            evento.Descricao = eventoDto.Descricao;
+            evento.DataI = eventoDto.DataI;
+            evento.HoraI = eventoDto.HoraI;
+            evento.HoraF = eventoDto.HoraF;
+            evento.Cep = eventoDto.Cep;
+            evento.Logradouro = eventoDto.Logradouro;
+            evento.Numero = eventoDto.Numero;
+            evento.Bairro = eventoDto.Bairro;
+            evento.Cidade = eventoDto.Cidade;
+            evento.Capacidade = eventoDto.Capacidade;
+            evento.Responsavel = eventoDto.Responsavel;
+            evento.ImagemId = eventoDto.ImagemId;
+
+            _db.Eventos.Update(evento);
+            await _db.SaveChangesAsync();
+
+            return Ok(new
+            {
+                success = true,
+                message = "Evento atualizado com sucesso!"
+            });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Erro ao atualizar evento: " + ex);
+            return StatusCode(500, new
+            {
+                error = "Erro interno. Tente novamente mais tarde.",
+                details = ex.Message
+            });
+        }
+    }
+
+    [Authorize]
+    [HttpDelete("eventos/{id}")]
+    public async Task<IActionResult> DeleteEvento(int id)
+    {
+        try
+        {
+            var evento = await _db.Eventos.FindAsync(id);
+            if (evento == null)
+                return NotFound(new { error = "Evento não encontrado" });
+
+            _db.Eventos.Remove(evento);
+            await _db.SaveChangesAsync();
+
+            return Ok(new
+            {
+                success = true,
+                message = "Evento excluído com sucesso!"
+            });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Erro ao excluir evento: " + ex);
+            return StatusCode(500, new
+            {
+                error = "Erro interno. Tente novamente mais tarde.",
+                details = ex.Message
+            });
+        }
+    }
+}
+
+// Classes DTO e Model
+public class EventoDto
+{
+    public string Nome { get; set; }
+    public string Tipo { get; set; }
+    public string Descricao { get; set; }
+    public DateTime DataI { get; set; }
+    public TimeSpan HoraI { get; set; }
+    public TimeSpan HoraF { get; set; }
+    public string Cep { get; set; }
+    public string Logradouro { get; set; }
+    public string Numero { get; set; }
+    public string Bairro { get; set; }
+    public string Cidade { get; set; }
+    public int Capacidade { get; set; }
+    public string Responsavel { get; set; }
+    public int? ImagemId { get; set; }
+}
+
+public class Evento
+{
+    public int Id { get; set; }
+    public string Nome { get; set; }
+    public string Tipo { get; set; }
+    public string Descricao { get; set; }
+    public DateTime DataI { get; set; }
+    public TimeSpan HoraI { get; set; }
+    public TimeSpan HoraF { get; set; }
+    public string Cep { get; set; }
+    public string Logradouro { get; set; }
+    public string Numero { get; set; }
+    public string Bairro { get; set; }
+    public string Cidade { get; set; }
+    public int Capacidade { get; set; }
+    public string Responsavel { get; set; }
+    public int? ImagemId { get; set; }
+}
+
+public class Image
+{
+    public int Id { get; set; }
+    public string FileName { get; set; }
+    public string FilePath { get; set; }
+}
+
+public class ApplicationDbContext : DbContext
+{
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+
+    public DbSet<Evento> Eventos { get; set; }
+    public DbSet<Image> Images { get; set; }
+}
