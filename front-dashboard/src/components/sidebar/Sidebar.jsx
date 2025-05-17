@@ -25,7 +25,7 @@ function Sidebar() {
                 return;
             }
 
-            const response = await fetch('http://localhost:3000/api/user', {
+            const response = await fetch('https://web-app-inovatech-dygwf7afhff7bfa5.brazilsouth-01.azurewebsites.net/api/user', {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -44,7 +44,7 @@ function Sidebar() {
             
             urlAjeitada = urlAjeitada.replace(/^\/*/, '');
             
-            return `http://localhost:3000/${urlAjeitada}`;
+            return `https://web-app-inovatech-dygwf7afhff7bfa5.brazilsouth-01.azurewebsites.net/${urlAjeitada}`;
             };
 
             const data = await response.json();
