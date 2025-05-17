@@ -11,7 +11,7 @@ function ListaEventos(){
         }
     
         try {
-          const response = await fetch('http://localhost:3000/api/eventos', {
+          const response = await fetch('https://web-app-inovatech-dygwf7afhff7bfa5.brazilsouth-01.azurewebsites.net/api/eventos', {
             headers: {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json'
