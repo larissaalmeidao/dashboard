@@ -25,7 +25,7 @@ function Login() {
         }
 
         try {
-            const response = await fetch('http://localhost:3000/api/login', {
+            const response = await fetch('https://web-app-inovatech-dygwf7afhff7bfa5.brazilsouth-01.azurewebsites.net/api/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password })
