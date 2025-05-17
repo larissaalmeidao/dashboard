@@ -307,7 +307,7 @@ async function enviarAgendamento(event) {
             const formDataImg = new FormData();
             formDataImg.append('image', file);
             
-            const uploadResponse = await fetch('http://localhost:3000/api/images', {
+            const uploadResponse = await fetch('https://web-app-inovatech-dygwf7afhff7bfa5.brazilsouth-01.azurewebsites.net/api/images', {
                 method: 'POST',
                 body: formDataImg
             });
@@ -317,8 +317,8 @@ async function enviarAgendamento(event) {
         }
 
         const url = isEdit 
-            ? `http://localhost:3000/api/eventos/${eventoId}`
-            : 'http://localhost:3000/api/eventos';
+            ? `https://web-app-inovatech-dygwf7afhff7bfa5.brazilsouth-01.azurewebsites.net/api/eventos/${eventoId}`
+            : 'https://web-app-inovatech-dygwf7afhff7bfa5.brazilsouth-01.azurewebsites.net/api/eventos';
             
         const method = isEdit ? 'PUT' : 'POST';
 
