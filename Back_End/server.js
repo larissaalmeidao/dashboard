@@ -4,14 +4,6 @@ import dotenv from 'dotenv'
 import routes from './routes.js'
 
 dotenv.config()
-
-// Criar pastas se não existirem
-const uploadDir = path.join(process.cwd(), 'uploads');
-const profPicDir = path.join(process.cwd(), 'uploads-profpic');
-
-if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
-if (!fs.existsSync(profPicDir)) fs.mkdirSync(profPicDir, { recursive: true });
-
 const app = express()
 const port = process.env.PORT || 3000
 
