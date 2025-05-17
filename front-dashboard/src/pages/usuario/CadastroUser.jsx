@@ -69,7 +69,7 @@ function CadastroUser() {
       const formDataImg = new FormData();
       formDataImg.append('image', formData.photo);
       
-      const uploadResponse = await fetch('http://localhost:3000/api/fotoPerfil', {
+      const uploadResponse = await fetch('https://web-app-inovatech-dygwf7afhff7bfa5.brazilsouth-01.azurewebsites.net/api/fotoPerfil', {
         method: 'POST',
         body: formDataImg
       });
@@ -78,7 +78,7 @@ function CadastroUser() {
       imagemId = (await uploadResponse.json()).id;
     }
 
-    const response = await fetch('http://localhost:3000/api/registro', {
+    const response = await fetch('https://web-app-inovatech-dygwf7afhff7bfa5.brazilsouth-01.azurewebsites.net/api/registro', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
