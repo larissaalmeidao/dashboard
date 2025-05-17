@@ -171,7 +171,7 @@ function CadastroEvento({ eventoParaEditar, onEventoSalvo, onFecharModal }) {
                 const formDataImg = new FormData();
                 formDataImg.append('image', formData.banner);
                 
-                const uploadResponse = await fetch('http://localhost:3000/api/images', {
+                const uploadResponse = await fetch('https://web-app-inovatech-dygwf7afhff7bfa5.brazilsouth-01.azurewebsites.net/api/images', {
                     method: 'POST',
                     body: formDataImg
                 });
@@ -181,8 +181,8 @@ function CadastroEvento({ eventoParaEditar, onEventoSalvo, onFecharModal }) {
             }
 
             const url = eventoParaEditar 
-                ? `http://localhost:3000/api/eventos/${eventoParaEditar.id}`
-                : 'http://localhost:3000/api/eventos';
+                ? `https://web-app-inovatech-dygwf7afhff7bfa5.brazilsouth-01.azurewebsites.net/api/eventos/${eventoParaEditar.id}`
+                : 'https://web-app-inovatech-dygwf7afhff7bfa5.brazilsouth-01.azurewebsites.net/api/eventos';
 
             const method = eventoParaEditar ? 'PUT' : 'POST';
 
@@ -506,7 +506,7 @@ function CadastroEvento({ eventoParaEditar, onEventoSalvo, onFecharModal }) {
                             if (window.confirm('Tem certeza que deseja excluir este evento?')) {
                             try {
                                 const token = localStorage.getItem('token');
-                                const response = await fetch(`http://localhost:3000/api/eventos/${eventoParaEditar.id}`, {
+                                const response = await fetch(`https://web-app-inovatech-dygwf7afhff7bfa5.brazilsouth-01.azurewebsites.net/api/eventos/${eventoParaEditar.id}`, {
                                 method: 'DELETE',
                                 headers: {
                                     'Authorization': `Bearer ${token}`,
