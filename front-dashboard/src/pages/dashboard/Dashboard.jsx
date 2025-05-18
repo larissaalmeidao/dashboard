@@ -6,7 +6,7 @@ import Sidebar from '../../components/sidebar/Sidebar';
 import CadastroEvento from './CriarEvento';
 import Calendar from './js/calendario';
 import ApexCharts from 'apexcharts';
-import grafic from './../../assets/images/grafic.png';
+// import grafic from './../../assets/images/grafic.png';
 
 function Dashboard() {
   const [eventos, setEventos] = useState([]);
@@ -159,10 +159,10 @@ function Dashboard() {
           <p className="data">{evento.dataFormatada || ''}</p>
           <p className="horario">{evento.horarioInicio || ''} - {evento.horarioFim || ''}</p>
         </div>
-        <div className='info-grafic'>
+{/*         <div className='info-grafic'>
           <img src={grafic} alt="grafic" className='grafic'/>
           <p>50%</p>
-        </div>
+        </div> */}
       </div>
     ));
   };
