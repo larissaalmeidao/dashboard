@@ -8,7 +8,8 @@ import iEventos from './../../assets/img/calendar-heart-svgrepo-com.png';
 import publi from './../../assets/img/wrap-img-left-svgrepo-com.png';
 import config from './../../assets/img/configuration-gear-options-preferences-settings-system-svgrepo-com 1.png';
 
-function Sidebar() {
+function Sidebar({ aberta, fechar }) {
+  const sidebarClass = `sidebar ${aberta ? 'active' : ''}`;
     const navigate = useNavigate();
     const [userData, setUserData] = useState({
         name: 'Carregando...',
@@ -79,7 +80,7 @@ console.log('URL da foto:', userData.photo);
         <div data-theme="light">
     
             <div className="container-sidebar">
-                <aside className="sidebar" id="sidebar">
+                <aside className={sidebarClass} id="sidebar">
                     <div className="sidebar-content">
                         <div className="sidebar-header">
                             <Link to="/">
@@ -87,7 +88,7 @@ console.log('URL da foto:', userData.photo);
                                      alt="logo" 
                                      className="logo"/>
                             </Link>
-                            <button id="fecharSidebar" className="fechar-button">✕</button>
+                            <button id="fecharSidebar" className="fechar-button" onClick={fechar}>✕</button>
                         </div>
                         <nav>
                             <ul>
