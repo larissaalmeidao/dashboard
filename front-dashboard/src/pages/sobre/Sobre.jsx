@@ -15,6 +15,7 @@ import Menu from '../../components/menu/menu';
 
 
 function Sobre (){
+    const [sidebarAberta, setSidebarAberta] = useState(false);
     return(
         <div className='container-dashboards'>
             <Sidebar aberta={sidebarAberta} fechar={() => setSidebarAberta(false)} />
