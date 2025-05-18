@@ -96,6 +96,7 @@ body {
     flex-grow: 1;
     overflow-y: auto;
     padding-bottom: 400px;
+    overflow: hidden;
 }
 
 .sidebar-header {
