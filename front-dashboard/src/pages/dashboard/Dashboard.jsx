@@ -7,12 +7,14 @@ import CadastroEvento from './CriarEvento';
 import Calendar from './js/calendario';
 import ApexCharts from 'apexcharts';
 import grafic from './../../assets/images/grafic.png';
+import menu from './../../assets/img/menu-svgrepo-com.png';
 
 function Dashboard() {
   const [eventos, setEventos] = useState([]);
   const [eventosFiltrados, setEventosFiltrados] = useState([]);
   const [termoBusca, setTermoBusca] = useState('');
   const [eventoParaEditar, setEventoParaEditar] = useState(null);
+  const [sidebarAberta, setSidebarAberta] = useState(false);
   const chartRef = useRef(null);
   const inputBuscaRef = useRef(null);
   const navigate = useNavigate();
@@ -169,12 +171,12 @@ function Dashboard() {
 
   return (
     <div className="container-dashboards">
-      <Sidebar/>
+      <Sidebar aberta={sidebarAberta} fechar={() => setSidebarAberta(false)} />
       <main className="conteudo-principal">
         <header className="cabecalho">
-          <button id="abrirSidebar" className="menu-button">
+          <button id="abrirSidebar" className="menu-button" onClick={() => setSidebarAberta(true)}>
             <span className="menu-icon">
-              <img src="../Dashboards/img/menu-svgrepo-com.png" alt="menu" className="menu"/>
+              <img src={menu} alt="menu" className="menu"/>
             </span>
           </button>
           <div className="container-busca">
