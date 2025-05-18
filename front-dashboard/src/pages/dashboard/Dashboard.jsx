@@ -7,7 +7,7 @@ import CadastroEvento from './CriarEvento';
 import Calendar from './js/calendario';
 import ApexCharts from 'apexcharts';
 import grafic from './../../assets/images/grafic.png';
-import menu from './../../assets/img/menu-svgrepo-com.png';
+import Menu from '../../components/menu/menu';
 
 function Dashboard() {
   const [eventos, setEventos] = useState([]);
@@ -174,11 +174,7 @@ function Dashboard() {
       <Sidebar aberta={sidebarAberta} fechar={() => setSidebarAberta(false)} />
       <main className="conteudo-principal">
         <header className="cabecalho">
-          <button id="abrirSidebar" className="menu-button" onClick={() => setSidebarAberta(true)}>
-            <span className="menu-icon">
-              <img src={menu} alt="menu" className="menu"/>
-            </span>
-          </button>
+          <Menu onAbrirSidebar={() => setSidebarAberta(true)} />
           <div className="container-busca">
             <div className="caixa-busca">
               <button className="botao-busca">
