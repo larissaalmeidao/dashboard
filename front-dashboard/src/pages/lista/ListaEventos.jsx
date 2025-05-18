@@ -4,12 +4,14 @@ import './eventos.css';
 import { Link } from 'react-router-dom';
 import { useEffect, useState, useRef} from 'react';
 import grafic from './../../assets/images/grafic.png';
+import Menu from '../../components/menu/menu';
 
 function ListaEventos(){
   const [eventos, setEventos] = useState([]);
     const [eventosFiltrados, setEventosFiltrados] = useState([]);
     const [termoBusca, setTermoBusca] = useState('');
     const [eventoParaEditar, setEventoParaEditar] = useState(null);
+  const [sidebarAberta, setSidebarAberta] = useState(false);
     const inputBuscaRef = useRef(null);
 
     useEffect(() => {
@@ -100,14 +102,10 @@ function ListaEventos(){
     return(
         <div class="container-dashboards">
 
-    <Sidebar/>
+    <Sidebar aberta={sidebarAberta} fechar={() => setSidebarAberta(false)} />
         <main class="conteudo-principal">
             <header className="cabecalho">
-          <button id="abrirSidebar" className="menu-button">
-            <span className="menu-icon">
-              <img src="../Dashboards/img/menu-svgrepo-com.png" alt="menu" className="menu"/>
-            </span>
-          </button>
+          <Menu onAbrirSidebar={() => setSidebarAberta(true)} />
           <div className="container-busca">
             <div className="caixa-busca">
               <button className="botao-busca">
