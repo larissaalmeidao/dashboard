@@ -3,7 +3,7 @@ import CadastroEvento from '../dashboard/CriarEvento';
 import './eventos.css';
 import { Link } from 'react-router-dom';
 import { useEffect, useState, useRef} from 'react';
-// import grafic from './../../assets/images/grafic.png';
+import grafic from './../../assets/images/grafic.png';
 
 function ListaEventos(){
   const [eventos, setEventos] = useState([]);
@@ -89,10 +89,10 @@ function ListaEventos(){
           <p className="data">{evento.dataFormatada || ''}</p>
           <p className="horario">{evento.horarioInicio || ''} - {evento.horarioFim || ''}</p>
         </div>
-{/*         <div className='info-grafic'>
+        <div className='info-grafic'>
           <img src={grafic} alt="grafic" className='grafic'/>
           <p>50%</p>
-        </div> */}
+        </div>
       </div>
     ));
   };
