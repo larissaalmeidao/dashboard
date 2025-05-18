@@ -1,0 +1,21 @@
+@media (max-width: 768px) {
+    .menu-button {
+        display: block;
+        border: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.222);
+        background-color: var(--clr-sidebar);
+        border-radius: 1rem;
+    }
+
+    .menu{
+        padding: 9px;
+        height: 3rem;
+        width: 3rem;
+    }
+}
+
+@media (min-width: 769px) {
+    .menu-button {
+        display: none;
+    }
+}
