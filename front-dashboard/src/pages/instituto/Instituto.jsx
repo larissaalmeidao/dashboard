@@ -57,20 +57,25 @@ import usp from './../../assets/images/usp.jpg';
 function Instituto (){
 
     const [currentImage, setCurrentImage] = useState(1);
+    const [menuAberto, setMenuAberto] = useState(false); // Estado para controlar o menu móvel
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImage(prev => {
-        if (prev >= 3) {
-          return 1;
-        } else {
-          return prev + 1;
-        }
-      });
-    }, 5000);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentImage(prev => {
+                if (prev >= 3) {
+                    return 1;
+                } else {
+                    return prev + 1;
+                }
+            });
+        }, 5000);
 
-    return () => clearInterval(interval);
-  }, []);
+        return () => clearInterval(interval);
+    }, []);
+
+    const alternarMenu = () => {
+     setMenuAberto(!menuAberto);
+    };
 
     return(
         <div data-wf-page="60fc6fd742d4098157276ea9" data-wf-site="60fc6fd742d40922fd276ea8">
@@ -87,15 +92,14 @@ function Instituto (){
                 <a href="#" id="w-node-fdffd808-9d62-3cfe-7b66-fba621edb54a-57276ea9" class="logo w-nav-brand">
                     <img src={Logo} loading="lazy" alt="Instituto Criativo"/>
                 </a>
-                <nav role="navigation" id="w-node-fdffd808-9d62-3cfe-7b66-fba621edb54b-57276ea9" class="nav-menu w-nav-menu">
-
-                    <a href="#sobre" class="nav-item w-nav-link"><button class="outros">Sobre</button></a>
-                    <a href="#segmentos" class="nav-item w-nav-link"><button class="outros1">Segmento</button></a>
-                    <a href="#impacto-social" class="nav-item w-nav-link"><button class="outros2">Impacto Social</button></a>
-                    <a href="#volutarios" class="nav-item w-nav-link"><button class="outros3">Colaboradores</button></a> 
-                    <a href="#marcas" class="nav-item w-nav-link"><button class="outros4">Marcas</button></a>
-                    <Link className="nav-item w-nav-link" to="/login"><button id="colab">Área do Colaborador</button></Link>
-                
+                <nav role="navigation" id="w-node-fdffd808-9d62-3cfe-7b66-fba621edb54b-57276ea9" 
+                         className={`nav-menu w-nav-menu ${menuAberto ? 'w--nav-menu-open' : ''}`}>
+                        <a href="#sobre" className="nav-item w-nav-link"><button className="outros">Sobre</button></a>
+                        <a href="#segmentos" className="nav-item w-nav-link"><button className="outros1">Segmento</button></a>
+                        <a href="#impacto-social" className="nav-item w-nav-link"><button className="outros2">Impacto Social</button></a>
+                        <a href="#volutarios" className="nav-item w-nav-link"><button className="outros3">Colaboradores</button></a> 
+                        <a href="#marcas" className="nav-item w-nav-link"><button className="outros4">Marcas</button></a>
+                        <Link className="nav-item w-nav-link" to="/login"><button id="colab">Área do Colaborador</button></Link>
                 </nav>
                 <div id="w-node-_972faf08-b541-cf96-6ea6-788a36200efa-57276ea9" class="right-itens">
                     <a href="https://api.whatsapp.com/send?phone=5511910747492&amp;text=Quero%20falar%20sobre%20o%20Instituto%20Criativo" target="_blank" class="icon-button w-inline-block">
@@ -104,9 +108,22 @@ function Instituto (){
                     <a href="https://www.paypal.com/donate/?cmd=_s-xclick&amp;hosted_button_id=EYE7VJQTJKGVE&amp;source=url" target="_blank" class="secondary-button header w-button">Faça uma doação</a>
                 </div>
 
-                <div id="w-node-fdffd808-9d62-3cfe-7b66-fba621edb552-57276ea9" class="menu-mobile w-nav-button">
-                    <div class="w-icon-nav-menu"></div>
-                </div>
+                <div
+                    className={`menu-mobile w-nav-button ${menuAberto ? 'w--open' : ''}`}
+                    onClick={alternarMenu}
+                    >
+                    <div className="w-icon-nav-menu"></div>
+                    </div>
+                    {menuAberto && (
+                    <div className="menu-mobile-content">
+                        <a href="#sobre" className="nav-item"><button className="outros">Sobre</button></a>
+                        <a href="#segmentos" className="nav-item"><button className="outros1">Segmento</button></a>
+                        <a href="#impacto-social" className="nav-item"><button className="outros2">Impacto Social</button></a>
+                        <a href="#volutarios" className="nav-item"><button className="outros3">Colaboradores</button></a>
+                        <a href="#marcas" className="nav-item"><button className="outros4">Marcas</button></a>
+                        <Link to="/login" className="nav-item"><button id="colab">Área do Colaborador</button></Link>
+                    </div>
+                    )}
                 
             </div>
 
