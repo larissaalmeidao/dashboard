@@ -1,4 +1,5 @@
 import './sobre.css';
+import { useState } from 'react';
 
 
 import exDash from './../../assets/img/Group 53.png';
@@ -9,14 +10,16 @@ import vini from './../../assets/img/vini.png';
 import git from './../../assets/img/github 1.png';
 import ld from './../../assets/img/linkedin 1.png';
 import Sidebar from '../../components/sidebar/Sidebar';
+import Menu from '../../components/menu/menu';
 
 
 
 function Sobre (){
     return(
         <div className='container-dashboards'>
-            <Sidebar/>
+            <Sidebar aberta={sidebarAberta} fechar={() => setSidebarAberta(false)} />
             <div class="conteudo-principal">
+                <Menu onAbrirSidebar={() => setSidebarAberta(true)} />
             
             <div class="onda-fundo">
                 <div class="sobre-conteudo">
