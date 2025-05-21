@@ -5,6 +5,7 @@ import ListaEventos from "../../pages/lista/ListaEventos";
 import Instituto from "../../pages/instituto/Instituto";
 import Login from "../../pages/login/Login";
 import CadastroUser from "../../pages/usuario/CadastroUser";
+import Publicacoes from "../../pages/publicacao/Publicacao";
 
 
 function Rotas() {
@@ -21,6 +22,7 @@ function Rotas() {
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/sobre" element={<Sobre />} />
                         <Route path="/lista" element={<ListaEventos/>}/>
+                        <Route path="/publi" element={<Publicacoes/>}/>
                         
                     </Routes>
                 
