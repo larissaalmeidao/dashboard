@@ -94,7 +94,7 @@ console.log('URL da foto:', userData.photo);
                             <ul>
                                 <li><Link className="link" to="/dashboard"><img src={painel} alt="dashboards" className="painel"/>Painel</Link></li>
                                 <li><Link className="link" to="/lista"><img src={iEventos} alt="Eventos" className="cal"/> Eventos</Link></li>
-                                <li><a href="#publications"><img src={publi} alt="Publicações" className="pubs"/>Publicações</a></li>
+                                <li><Link className="link" to="/publi"><img src={publi} alt="Publicações" className="pubs"/>Publicações</Link></li>
                                 <li><Link className="link" to="/sobre"><img src={info} alt="sobre" className="sobre"/> Sobre</Link></li>
                             </ul>
                         </nav>
