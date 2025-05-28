@@ -27,7 +27,7 @@ function Publicacao() {
       return;
     }
 
-    const accessToken = 'EAATxvdUIBSoBO4GlQL7BFPY0x01Xxb8sygQ8hLTwPqewCl4ndNYLHlXbcrr9xGYgyPyyZCxzvQMK9jYuvxUnXGxMnLx36XTDRuGwoiP1ZAiSZAre0rEujQYSWedQQvMRRamCMxuxnBBai2uZAF7hWsLjJAUhjLa4bzpeHzEm8w3WNEAQFcZC5W5unnzqWAqvA7tpeMRAgV62IvSMOGyxp0yxKPJkZD';
+    const accessToken = 'EAATxvdUIBSoBO73hO9TNZCSexXCOulr3aBpYo5djZB5FncZAgOAAE353WQjWOd1uf6UGfrPsCnZBVsY3iefrGkyLOwAXmdwj21iluwtgtb5SKIMKvrdD1CWKQ3sMq64dQZC2ZBcy0lWH7uz0l3msaZBZByk1NZCx1AXlfcgMj7G0QXBoDFZBOTouFfPnIGpckZBueWr0T3174Jc1ugEjYZCwQacOrgMj0ZCkZD';
     const pageId = '17841474737754305';
 
     setPhotoData({
