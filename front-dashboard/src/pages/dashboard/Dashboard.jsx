@@ -228,11 +228,11 @@ function Dashboard() {
               </div>
               <div className="cartao-estatistica">
                 <h3>INSCRITOS</h3>
-                <p className="numero-estatistica">2000</p>
+                <p className="numero-estatistica">327</p>
               </div>
               <div className="cartao-estatistica">
                 <h3>PARTICIPANTES CONCLUIRAM 100%</h3>
-                <p className="numero-estatistica">1590</p>
+                <p className="numero-estatistica">0</p>
               </div>
             </div>
             
